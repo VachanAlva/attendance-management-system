@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attendance</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+    <h1>Attendance - Class & Subject</h1>
+    <nav>
+        <a href="teacher-dashboard.html">Back</a>
+        <a href="index.html">Logout</a>
+    </nav>
+</header>
+
+<div class="container">
+
+    <div class="card">
+        <label>Select Date</label>
+        <input type="date">
+    </div>
+
+    <div class="card">
+        <a href="view-absence.html">
+            <button>View Absence Details</button>
+        </a>
+    </div>
+
+    <div class="card">
+        <h2>Student List</h2>
+
+        <table>
+            <tr>
+                <th>Roll No</th>
+                <th>Name</th>
+                <th>Status</th>
+            </tr>
+
+            <tr>
+                <td>1</td>
+                <td>Student A</td>
+                <td>
+                    <select>
+                        <option>Present</option>
+                        <option>Absent</option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td>2</td>
+                <td>Student B</td>
+                <td>
+                    <select>
+                        <option>Present</option>
+                        <option>Absent</option>
+                    </select>
+                </td>
+            </tr>
+
+        </table>
+
+        <br>
+        <button>Submit</button>
+        <button>Update</button>
+    </div>
+
+</div>
+
+</body>
+</html>
