@@ -1,10 +1,10 @@
-
 <!DOCTYPE html>
 <html>
 <head>
     <title>Student Dashboard</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
 <header>
@@ -19,7 +19,7 @@
     <div class="card">
         <h2>Attendance Summary</h2>
 
-        <table>
+        <table id="attendanceTable">
             <tr>
                 <th>Subject</th>
                 <th>Total</th>
@@ -27,24 +27,6 @@
                 <th>Absent</th>
                 <th>Percentage</th>
                 <th>Status</th>
-            </tr>
-
-            <tr>
-                <td>Subject 1</td>
-                <td>40</td>
-                <td>36</td>
-                <td>4</td>
-                <td>90%</td>
-                <td class="safe">Safe</td>
-            </tr>
-
-            <tr>
-                <td>Subject 2</td>
-                <td>30</td>
-                <td>20</td>
-                <td>10</td>
-                <td>66%</td>
-                <td class="warning">Shortage</td>
             </tr>
         </table>
     </div>
@@ -56,6 +38,48 @@
     </div>
 
 </div>
+
+<script>
+
+const student_id = localStorage.getItem("student_id");
+
+fetch(`http://localhost:3000/student-attendance/${student_id}`)
+.then(res => res.json())
+.then(data => {
+
+    const table = document.getElementById("attendanceTable");
+
+    data.forEach(subject => {
+
+        const total = subject.total;
+        const present = subject.present;
+        const absent = total - present;
+
+        const percentage = Math.round((present / total) * 100);
+
+        const row = table.insertRow();
+
+        row.insertCell(0).innerText = subject.subject;
+        row.insertCell(1).innerText = total;
+        row.insertCell(2).innerText = present;
+        row.insertCell(3).innerText = absent;
+        row.insertCell(4).innerText = percentage + "%";
+
+        const statusCell = row.insertCell(5);
+
+        if(percentage >= 75){
+            statusCell.innerText = "Safe";
+            statusCell.style.color = "green";
+        } else {
+            statusCell.innerText = "Shortage";
+            statusCell.style.color = "red";
+        }
+
+    });
+
+});
+
+</script>
 
 </body>
 </html>

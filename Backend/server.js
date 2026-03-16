@@ -185,6 +185,29 @@ app.post("/update-attendance", (req, res) => {
 
 });
 
+app.get("/student-attendance/:student_id", (req,res)=>{
+
+    const student_id = req.params.student_id;
+
+    const sql = `
+    SELECT subject,
+    COUNT(*) as total,
+    SUM(CASE WHEN status='Present' THEN 1 ELSE 0 END) as present
+    FROM attendance
+    WHERE student_id = ?
+    GROUP BY subject
+    `;
+
+    db.query(sql,[student_id],(err,result)=>{
+        if(err){
+            res.send(err);
+        }else{
+            res.json(result);
+        }
+    });
+
+});
+
 /* SERVER */
 
 app.listen(3000, () => {
