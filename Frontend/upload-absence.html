@@ -45,6 +45,13 @@ document.querySelector("button").addEventListener("click", function(){
     const subject = document.querySelector("select").value;
     const date = document.querySelector("input[type='date']").value;
     const reason = document.querySelector("textarea").value;
+    const student_id = localStorage.getItem("student_id");
+
+    if(!student_id){
+        alert("Please login as a student first.");
+        window.location.href = "student-login.html";
+        return;
+    }
 
     fetch("http://localhost:3000/upload-absence", {
         method: "POST",
@@ -52,7 +59,7 @@ document.querySelector("button").addEventListener("click", function(){
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            student_id: 1,
+            student_id: student_id,
             subject: subject,
             date: date,
             reason: reason

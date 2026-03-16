@@ -49,6 +49,7 @@ document.getElementById("studentLoginBtn").addEventListener("click", function(){
     .then(data => {
 
         if(data === "success"){
+            localStorage.setItem("student_id", student_id);
             window.location.href = "student-dashboard.html";
         }
         else{
