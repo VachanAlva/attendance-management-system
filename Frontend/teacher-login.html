@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teacher Login</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+    <h1>Teacher Login</h1>
+    <nav>
+        <a href="index.html">Back</a>
+    </nav>
+</header>
+
+<div class="container center-card">
+    <div class="card">
+
+        <label>Teacher ID</label>
+        <input type="text" placeholder="Enter Teacher ID">
+
+        <label>Password</label>
+        <input type="password" placeholder="Enter Password">
+
+       
+            <button id="teacherLoginBtn"> Login</button>
+      
+
+    </div>
+</div>
+<script>
+
+document.getElementById("teacherLoginBtn").addEventListener("click", function(){
+
+    const teacher_id = document.querySelector("input[type='text']").value;
+    const password = document.querySelector("input[type='password']").value;
+
+    fetch("http://localhost:3000/teacher-login", {
+        method: "POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify({
+            teacher_id: teacher_id,
+            password: password
+        })
+    })
+    .then(res => res.text())
+    .then(data => {
+
+        if(data === "success"){
+            window.location.href = "teacher-dashboard.html";
+        }
+        else{
+            alert("Invalid Teacher Login");
+        }
+
+    });
+
+});
+
+</script>
+</body>
+</html>

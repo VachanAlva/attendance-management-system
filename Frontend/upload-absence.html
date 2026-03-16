@@ -38,6 +38,33 @@
     </div>
 
 </div>
+<script>
 
+document.querySelector("button").addEventListener("click", function(){
+
+    const subject = document.querySelector("select").value;
+    const date = document.querySelector("input[type='date']").value;
+    const reason = document.querySelector("textarea").value;
+
+    fetch("http://localhost:3000/upload-absence", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            student_id: 1,
+            subject: subject,
+            date: date,
+            reason: reason
+        })
+    })
+    .then(res => res.text())
+    .then(data => {
+        alert(data);
+    });
+
+});
+
+</script>
 </body>
 </html>

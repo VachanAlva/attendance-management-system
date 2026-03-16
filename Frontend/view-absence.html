@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Absence Requests</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>Absence Requests</h1>
+</header>
+
+<div class="container">
+
+    <div class="card">
+
+        <table id="absenceTable">
+            <tr>
+                <th>Student ID</th>
+                <th>Subject</th>
+                <th>Date</th>
+                <th>Reason</th>
+                <th>Document</th>
+            </tr>
+        </table>
+
+    </div>
+
+</div>
+
+<script>
+
+fetch("http://localhost:3000/absence-requests")
+.then(res => res.json())
+.then(data => {
+
+    const table = document.getElementById("absenceTable");
+
+    data.forEach(request => {
+
+        const row = table.insertRow();
+
+        row.insertCell(0).innerText = request.student_id;
+        row.insertCell(1).innerText = request.subject;
+
+        // Format date properly
+        const formattedDate = new Date(request.date).toLocaleDateString();
+        row.insertCell(2).innerText = formattedDate;
+
+        row.insertCell(3).innerText = request.reason;
+
+        const docCell = row.insertCell(4);
+
+        if(request.document){
+            docCell.innerHTML = `<a href="http://localhost:3000/uploads/${request.document}" target="_blank">View Document</a>`;
+        } else {
+            docCell.innerText = "No File";
+        }
+
+    });
+
+});
+
+</script>
+
+</body>
+</html>

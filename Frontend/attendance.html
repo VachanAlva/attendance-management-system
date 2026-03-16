@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attendance</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+    <h1>Attendance - Class & Subject</h1>
+    <nav>
+        <a href="teacher-dashboard.html">Back</a>
+        <a href="index.html">Logout</a>
+    </nav>
+</header>
+
+<div class="container">
+
+    <div class="card">
+        <label>Select Date</label>
+        <input type="date">
+    </div>
+
+    <div class="card">
+        <a href="view-absence.html">
+            <button>View Absence Details</button>
+        </a>
+    </div>
+
+    <div class="card">
+        <h2>Student List</h2>
+
+        <table id="studentTable">
+            <tr>
+                <th>Roll No</th>
+                <th>Name</th>
+                <th>Status</th>
+            </tr>
+
+
+        </table>
+
+        <br>
+        <button id="submitAttendance">Submit</button>
+        
+    </div>
+
+</div>
+<script>
+
+// LOAD STUDENTS
+const params = new URLSearchParams(window.location.search);
+const className = params.get("class");
+
+fetch(`http://localhost:3000/students/${className}`)
+.then(res => res.json())
+.then(data => {
+
+    const table = document.getElementById("studentTable");
+
+    data.forEach(student => {
+
+        const row = table.insertRow();
+
+        row.insertCell(0).innerText = student.student_id;
+        row.insertCell(1).innerText = student.name;
+
+        const statusCell = row.insertCell(2);
+
+      statusCell.innerHTML = `
+<div style="display:flex; gap:30px;">
+<label>
+<input type="radio" name="status${student.student_id}" value="Present" checked> Present
+</label>
+
+<label>
+<input type="radio" name="status${student.student_id}" value="Absent"> Absent
+</label>
+</div>
+`;
+
+    });
+
+});
+
+
+document.getElementById("submitAttendance").addEventListener("click", function(){
+
+    const rows = document.querySelectorAll("table tr");
+
+    rows.forEach((row, index) => {
+
+        if(index === 0) return;
+
+        const student_id = row.cells[0].innerText;
+      const status = row.querySelector('input[type="radio"]:checked').value;
+        const date = document.querySelector("input[type='date']").value;
+
+        fetch("http://localhost:3000/mark-attendance", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                student_id: student_id,
+                subject: "Subject1",
+                date: date,
+                status: status
+            })
+        });
+
+    });
+
+    alert("Attendance submitted");
+
+});
+
+</script>
+</body>
+</html>
